@@ -1,0 +1,21 @@
+a b _1 ab1  $tab   _$5
+1  221 0
+0.1 1.028 1.2E-4  0.2e+3 1e3
+for foR fOr fOR For FoR FOr FOR
+if iF If IF
+>= <= == !=
+
+/**/
+/* */
+ /* Um comentário */     /* Outro
+comentário */
+// Comentário até o final da linha
+// /*Esse comentário anula o início
+ /* Esse comentário foi terminado! // */
+
+"hello, world"   
+"Aspas internas com \" (contrabarra)"
+"ou com "" (duas aspas)"
+"a" " "
+"
+"
