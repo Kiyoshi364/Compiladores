@@ -17,7 +17,7 @@ MEIG		<=
 IG			==
 DIF			!=
 
-C_INLIN		"//".+\n
+C_INLIN		"//".+
 C_MULT_S	"/*"
 C_MULT_M	[^\*]\/|\*[^\/]|[^\*\/]
 C_MULT_E	"*/"
