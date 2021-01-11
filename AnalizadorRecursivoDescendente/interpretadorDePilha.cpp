@@ -4,13 +4,15 @@
 #include <string>
 #include <iostream>
 
+#define DEBUG if(0)
+
 using namespace std;
 
-enum TOKEN { NUM = 256, ID };
+enum TOKEN { NUM = 256, ID, STRING, FLOAT };
 
 string lexema;
 vector<string> pilha;
-map<string, double> var;
+map<string, string> var;
 
 void print();
 void Max2();
@@ -29,6 +31,18 @@ void push( string valor ) {
 	pilha.push_back( valor );
 }
 
+int isNum( string s ) {
+	int dot = 0;
+	for ( char c : s ) {
+		if ( c == '.' || c == ',' ) {
+			dot += 1;
+			if ( dot > 1 ) return false;
+		} else if ( isdigit(c) ) {
+		} else return false;
+	}
+	return true;
+}
+
 string pop_string() {
 	string temp = pilha.back();
 	pilha.pop_back();
@@ -42,7 +56,13 @@ double pop_double() {
 }
 
 void print() {
-	cout << pop_double() << " ";
+	string str = pop_string();
+	if ( isNum(str) ) {
+		push( str );
+		cout << pop_double() << " ";
+	} else {
+		cout << "\"" << str << "\"" << " ";
+	}
 }
 
 void Max2() {
@@ -62,7 +82,27 @@ int next_token() {
 		lexema = (char) look_ahead;
 
 		look_ahead = getchar();
-		return NUM;
+		while( isdigit( look_ahead ) ) {
+			lexema += (char) look_ahead;
+
+			look_ahead = getchar();
+		}
+
+		if ( look_ahead != '.' && look_ahead != ',' ) {
+			return NUM;
+		}
+
+		// FLOAT
+		lexema += (char) look_ahead;
+
+		look_ahead = getchar();
+		while( isdigit( look_ahead ) ) {
+			lexema += (char) look_ahead;
+
+			look_ahead = getchar();
+		}
+
+		return FLOAT;
 	}
 
 	if( isalpha( look_ahead ) ) {
@@ -80,7 +120,7 @@ int next_token() {
 
 	// STRING
 	if( look_ahead == '"' ) {
-		lexema = (char) look_ahead;
+		lexema = "";
 
 		look_ahead = getchar();
 		while( look_ahead != '"' ) {
@@ -88,8 +128,9 @@ int next_token() {
 
 			look_ahead = getchar();
 		}
+		look_ahead = getchar();
 
-		return ID;
+		return STRING;
 	}
 
 	switch( look_ahead ) {
@@ -100,9 +141,10 @@ int next_token() {
 		case '=':
 		case '@':
 		case '#':
-			int temp = look_ahead;
+			int tmp = look_ahead;
+			lexema = (char) look_ahead;
 			look_ahead = getchar();
-			return temp;
+			return tmp;
 	}
 
 	return EOF;
@@ -112,7 +154,11 @@ int main() {
 	int token = next_token();
 
 	while( token != EOF ) {
+		DEBUG printf("token: `%c' (%d)\n", token, token);
+		DEBUG cout << "lexema: `" << lexema << "'" << endl;
+
 		double op1, op2;
+		string str;
 
 		switch( token ) {
 			case NUM:
@@ -123,20 +169,36 @@ int main() {
 				push( lexema );
 				break;
 
+			case STRING:
+				push( lexema );
+				break;
+
+			case FLOAT:
+				push( lexema );
+				break;
+
 			case '@':
 				push( var[pop_string()] );
 				break;
 
 			case '=':
-				op2 = pop_double();
-				var[pop_string()] = op2;
+				str = pop_string();
+				var[pop_string()] = str;
 				break;
 
 			case '+':
-				op2 = pop_double();
-				op1 = pop_double();
+				str = pop_string();
+				if ( isNum(str) ) {
+					push( str );
+					op2 = pop_double();
+					op1 = pop_double();
 
-				push( op1 + op2 ); 
+					push( op1 + op2 );
+				} else {
+					string str1 = pop_string();
+					str = str1 + str;
+					push( str );
+				}
 				break;
 
 			case '-':
@@ -175,6 +237,8 @@ int main() {
 		token = next_token();
 	}
 
+	cout << endl << endl << "FIM" << endl;
+
 	cout << "Variáveis" << endl;
 	for( auto x : var )
 		cout << x.first << " = " << x.second << endl;
@@ -182,7 +246,6 @@ int main() {
 	cout << "Pilha" << endl;
 	for( string x : pilha )
 		cout << x << " ";
-
 
 	cout << endl;
 }
