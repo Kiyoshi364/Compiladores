@@ -73,14 +73,14 @@ void Atr() {
 	casa( '=' );
 	Expr();
 	casa( ';' );
-	print("= ");
+	print("=\n");
 }
 
 void Print() {
 	casa( PRINT );
 	Expr();
 	casa( ';' );
-	print("print # ");
+	print("print #\n");
 }
 
 void Expr() {
