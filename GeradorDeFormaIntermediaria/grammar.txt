@@ -1,0 +1,38 @@
+# Inicio
+I -> Atr I
+	| Print I
+	| NIL
+
+# Atribuição
+Atr -> id { id @ } = Expr ; { =\n }
+
+# Print
+Print -> print Expr ; { print #\n }
+
+# Expressões
+Expr -> Expr_T Expr2
+
+Expr2 -> + Expr_T { + } Expr2 
+		| - Expr_T { - } Expr2 
+		| NIL
+
+Expr_T -> Expr_F Expr_T_2
+Expr_T_2 -> * Expr_F { * } Expr_T_2 
+		| / Expr_F { / } Expr_T_2 
+		| NIL
+
+Expr_F -> id Expr_F_2
+		| num
+		| string
+		| ( Expr )
+
+# Talvez Função
+# Func -> id ( Args { id # }
+Maybe_Func -> ( Args { id # }
+			| NIL { id @ }
+
+# Argument(s)
+Args -> Expr Args_2
+Args_2 -> , Expr Args_2
+		| )
+
