@@ -10,18 +10,18 @@ Atr -> id { id @ } = Expr ; { =\n }
 Print -> print Expr ; { print #\n }
 
 # Expressões
-Expr -> Expr_T Expr2
+Expr -> Expr_T Expr_Loop
 
-Expr2 -> + Expr_T { + } Expr2 
-		| - Expr_T { - } Expr2 
-		| NIL
+Expr_Loop -> + Expr_T { + } Expr_Loop 
+			| - Expr_T { - } Expr_Loop
+			| NIL
 
-Expr_T -> Expr_F Expr_T_2
-Expr_T_2 -> * Expr_F { * } Expr_T_2 
-		| / Expr_F { / } Expr_T_2 
-		| NIL
+Expr_T -> Expr_F Expr_T_Loop
+Expr_T_Loop -> * Expr_F { * } Expr_T_Loop
+			| / Expr_F { / } Expr_T_Loop
+			| NIL
 
-Expr_F -> id Expr_F_2
+Expr_F -> id Maybe_Func
 		| num
 		| string
 		| ( Expr )
@@ -32,7 +32,8 @@ Maybe_Func -> ( Args { id # }
 			| NIL { id @ }
 
 # Argument(s)
-Args -> Expr Args_2
-Args_2 -> , Expr Args_2
+Args -> Expr Args_Loop
+		| )
+Args_Loop -> , Expr Args_Loop
 		| )
 

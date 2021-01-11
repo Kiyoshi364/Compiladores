@@ -15,13 +15,10 @@ void Init();
 void Atr();
 void Print();
 void Expr();
-void Expr_2();
 void Expr_T();
-void Expr_T_2();
 void Expr_F();
 void Maybe_Func();
 void Args();
-void Args_2();
 
 void next_token();
 void casa( int );
@@ -88,25 +85,25 @@ void Print() {
 
 void Expr() {
 	Expr_T();
-	Expr_2();
-}
-
-void Expr_2() {
-	switch( token ) {
-		case '+' : casa( '+' ); Expr_T(); print("+ "); Expr_2(); break;
-		case '-' : casa( '-' ); Expr_T(); print("- "); Expr_2(); break;
+	
+	while ( 1 ) {
+		switch( token ) {
+			case '+' : casa( '+' ); Expr_T(); print("+ "); break;
+			case '-' : casa( '-' ); Expr_T(); print("- "); break;
+			default: return;
+		}
 	}
 }
 
 void Expr_T() {
 	Expr_F();
-	Expr_T_2();
-}
 
-void Expr_T_2() {
-	switch( token ) {
-		case '*' : casa( '*' ); Expr_F(); print("* "); Expr_T_2(); break;
-		case '/' : casa( '/' ); Expr_F(); print("/ "); Expr_T_2(); break;
+	while ( 1 ) {
+		switch( token ) {
+			case '*' : casa( '*' ); Expr_F(); print("* "); break;
+			case '/' : casa( '/' ); Expr_F(); print("/ "); break;
+			default: return;
+		}
 	}
 }
 
@@ -138,15 +135,14 @@ void Maybe_Func() {
 
 void Args() {
 	Expr();
-	Args_2();
-}
 
-void Args_2() {
-	switch ( token ) {
-		case ',':
-			casa( ',' ); Expr(); Args_2(); break;
-		default:
-			casa( ')' ); break;
+	while ( 1 ) {
+		switch ( token ) {
+			case ',':
+				casa( ',' ); Expr(); break;
+			default:
+				casa( ')' ); return;
+		}
 	}
 }
 
