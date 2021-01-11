@@ -127,7 +127,7 @@ void Maybe_Func() {
 	casa( ID );
 	switch ( token ) {
 		case '(':
-			casa( '(' ); Args(); print( temp + " # " ); break;
+			casa( '(' ); Args(); casa( ')' ); print( temp + " # " ); break;
 		default:
 			print( temp + " @ " ); break;
 	}
@@ -140,8 +140,7 @@ void Args() {
 		switch ( token ) {
 			case ',':
 				casa( ',' ); Expr(); break;
-			default:
-				casa( ')' ); return;
+			default: return;
 		}
 	}
 }
