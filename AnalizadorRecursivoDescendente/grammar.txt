@@ -22,8 +22,8 @@ Expr_T_Loop -> * Expr_F { * } Expr_T_Loop
 			| NIL
 
 Expr_F -> id Maybe_Func
-		| num
-		| string
+		| num { num }
+		| string { string }
 		| ( Expr )
 
 # Talvez Função
