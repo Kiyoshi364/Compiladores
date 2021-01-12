@@ -134,7 +134,16 @@ void Maybe_Func() {
 }
 
 void Args() {
-	Expr();
+	switch ( token ) {
+		case ID:
+		case NUM:
+		case STRING:
+		case '(':
+			Expr();
+			break;
+		default:
+			return;
+	}
 
 	while ( 1 ) {
 		switch ( token ) {

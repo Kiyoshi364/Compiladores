@@ -27,12 +27,13 @@ Expr_F -> id Maybe_Func
 		| ( Expr )
 
 # Talvez Função
-# Func -> id ( Args { id # }
+# Func -> id ( Args ) { id # }
 Maybe_Func -> ( Args ) { id # }
 			| NIL { id @ }
 
 # Argument(s)
 Args -> Expr Args_Loop
+		| NIL
 Args_Loop -> , Expr Args_Loop
 		| NIL
 
